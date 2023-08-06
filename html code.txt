@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+<!--heading-->
+    <title>Cooling Load Calculator</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+<body>
+    <h1>Cooling Load Calculator</h1>
+    <form id="cooling-load-form">
+<!--to extract area of the building from the user-->
+        <label for="area">Area of the building (sq. meters): </label>
+        <input type="number" id="area" required><br>
+<!--to extract number of occupants from the user-->
+        <label for="occupants">Number of occupants: </label>
+        <input type="number" id="occupants" required><br>
+<!--to extract type of building from the user-->
+        <label for="building-type">Type of building: </label>
+        <select id="building-type" required>
+            <option value="residential">Residential</option>
+            <option value="commercial">Commercial</option>
+        </select><br>
+<!--to extract outdoor temperature from the user-->
+        <label for="outdoor-temp">Outdoor temperature (°C): </label>
+        <input type="number" id="outdoor-temp" required><br>
+<!--to extract indoor desired temperature from the user-->
+        <label for="indoor-temp">Indoor desired temperature (°C): </label>
+        <input type="number" id="indoor-temp" required><br>
+<!--final:to calculate cooling load-->
+        <button type="button" onclick="calculateCoolingLoad()">Calculate</button>
+    </form>
+    <p id="result"></p>
+
+    <script src="script.js"></script>
+</body>
+</html>
