@@ -1,59 +1,26 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Cooling Load Calculator</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
-        .input-label {
-            display: block;
-            margin-bottom: 5px;
-        }
-        .input-field {
-            width: 100%;
-            padding: 5px;
-            margin-bottom: 10px;
-        }
-        #result {
-            font-weight: bold;
-        }
-    </style>
-</head>
-<body>
-    <h1>Cooling Load Calculator</h1>
-    <label class="input-label">Area of the building (m²):</label>
-    <input type="number" class="input-field" id="area" step="0.01">
-    <label class="input-label">Number of occupants:</label>
-    <input type="number" class="input-field" id="occupants">
-    <label class="input-label">Type of building:</label>
-    <select class="input-field" id="buildingType">
-        <option value="residential">Residential</option>
-        <option value="commercial">Commercial</option>
-    </select>
-    <label class="input-label">Outdoor temperature (°C):</label>
-    <input type="number" class="input-field" id="outdoorTemp" step="0.01">
-    <label class="input-label">Indoor desired temperature (°C):</label>
-    <input type="number" class="input-field" id="indoorTemp" step="0.01">
-    <button onclick="calculateCoolingLoad()">Calculate Cooling Load</button>
-    <p id="result"></p>
+def calculate_cooling_load(area, occupants, building_type, outdoor_temp, indoor_temp):
+    if building_type == "residential":
+        cooling_load = 100 * occupants
+    elif building_type == "commercial":
+        cooling_load = 150 * occupants
+    else:
+        print("Invalid building type")
+        return
+    
+    U = 30  # Overall heat transfer coefficient in W/m²°C
+    
+    Q_conduction = U * area * (outdoor_temp - indoor_temp)
+    sensible_cooling_load = Q_conduction + cooling_load
+    
+    return sensible_cooling_load
 
-    <script>
-        function calculateCoolingLoad() {
-            var area = parseFloat(document.getElementById("area").value);
-            var occupants = parseInt(document.getElementById("occupants").value);
-            var buildingType = document.getElementById("buildingType").value;
-            var outdoorTemp = parseFloat(document.getElementById("outdoorTemp").value);
-            var indoorTemp = parseFloat(document.getElementById("indoorTemp").value);
-            var uValue = 30;
+# Get user inputs
+area = float(input("Enter the area of the building (in square meters): "))
+occupants = int(input("Enter the number of occupants in the building: "))
+building_type = input("Enter the type of building (residential, commercial, etc.): ")
+outdoor_temp = float(input("Enter the outdoor temperature (in Celsius): "))
+indoor_temp = float(input("Enter the indoor desired temperature (in Celsius): "))
 
-            var coolingLoad = (buildingType === "residential") ? 100 * occupants : (buildingType === "commercial") ? 150 * occupants : 0;
-            var qConduction = uValue * area * (outdoorTemp - indoorTemp);
-            var sensibleCoolingLoad = qConduction + coolingLoad;
-
-            document.getElementById("result").innerHTML = "Sensible Cooling Load: " + sensibleCoolingLoad + " W";
-        }
-    </script>
-</body>
-</html>
+# Calculate and display the cooling load
+cooling_load = calculate_cooling_load(area, occupants, building_type, outdoor_temp, indoor_temp)
+print("Sensible Cooling Load:", cooling_load, "W")
