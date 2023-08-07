@@ -1,36 +1,59 @@
 <!DOCTYPE html>
 <html>
 <head>
-<!--heading-->
     <title>Cooling Load Calculator</title>
-    <link rel="stylesheet" type="text/css" href="styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .input-label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .input-field {
+            width: 100%;
+            padding: 5px;
+            margin-bottom: 10px;
+        }
+        #result {
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
     <h1>Cooling Load Calculator</h1>
-    <form id="cooling-load-form">
-<!--to extract area of the building from the user-->
-        <label for="area">Area of the building (sq. meters): </label>
-        <input type="number" id="area" required><br>
-<!--to extract number of occupants from the user-->
-        <label for="occupants">Number of occupants: </label>
-        <input type="number" id="occupants" required><br>
-<!--to extract type of building from the user-->
-        <label for="building-type">Type of building: </label>
-        <select id="building-type" required>
-            <option value="residential">Residential</option>
-            <option value="commercial">Commercial</option>
-        </select><br>
-<!--to extract outdoor temperature from the user-->
-        <label for="outdoor-temp">Outdoor temperature (°C): </label>
-        <input type="number" id="outdoor-temp" required><br>
-<!--to extract indoor desired temperature from the user-->
-        <label for="indoor-temp">Indoor desired temperature (°C): </label>
-        <input type="number" id="indoor-temp" required><br>
-<!--final:to calculate cooling load-->
-        <button type="button" onclick="calculateCoolingLoad()">Calculate</button>
-    </form>
+    <label class="input-label">Area of the building (m²):</label>
+    <input type="number" class="input-field" id="area" step="0.01">
+    <label class="input-label">Number of occupants:</label>
+    <input type="number" class="input-field" id="occupants">
+    <label class="input-label">Type of building:</label>
+    <select class="input-field" id="buildingType">
+        <option value="residential">Residential</option>
+        <option value="commercial">Commercial</option>
+    </select>
+    <label class="input-label">Outdoor temperature (°C):</label>
+    <input type="number" class="input-field" id="outdoorTemp" step="0.01">
+    <label class="input-label">Indoor desired temperature (°C):</label>
+    <input type="number" class="input-field" id="indoorTemp" step="0.01">
+    <button onclick="calculateCoolingLoad()">Calculate Cooling Load</button>
     <p id="result"></p>
 
-    <script src="script.js"></script>
+    <script>
+        function calculateCoolingLoad() {
+            var area = parseFloat(document.getElementById("area").value);
+            var occupants = parseInt(document.getElementById("occupants").value);
+            var buildingType = document.getElementById("buildingType").value;
+            var outdoorTemp = parseFloat(document.getElementById("outdoorTemp").value);
+            var indoorTemp = parseFloat(document.getElementById("indoorTemp").value);
+            var uValue = 30;
+
+            var coolingLoad = (buildingType === "residential") ? 100 * occupants : (buildingType === "commercial") ? 150 * occupants : 0;
+            var qConduction = uValue * area * (outdoorTemp - indoorTemp);
+            var sensibleCoolingLoad = qConduction + coolingLoad;
+
+            document.getElementById("result").innerHTML = "Sensible Cooling Load: " + sensibleCoolingLoad + " W";
+        }
+    </script>
 </body>
 </html>
